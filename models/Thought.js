@@ -1,5 +1,38 @@
 const { Schema,model } = require('mongoose');
 
+// Reaction subdocument
+const reactionSchema = new Schema(
+    {
+        reactionId: {
+            type: mongoose.Objectid,
+            default: new Objectid
+        },
+
+        reactionBody: {
+            type: String,
+            require: true,
+            maxlength: 280
+        },
+
+        username: {
+            type: String,
+            require: true
+        },
+
+        createAt: {
+            type: Date,
+            default: DataTransfer.now,
+            //TODO: use getter to format date
+        }
+    },
+    {
+        toJSON: {
+            getters: true
+        },
+        id: false
+    }
+);
+
 const thoughtsSchema = new Schema(
     {
         thoughtText: {
@@ -12,7 +45,7 @@ const thoughtsSchema = new Schema(
         createdAt: {
             type: Data,
             default: Date.now,
-            get: date => moment(date).format("MMM DD, YYYY [at] hh:mm a")
+            //TODO: use getter to format the date
         },
 
         username: { // The user that created this thought 
@@ -26,10 +59,15 @@ const thoughtsSchema = new Schema(
     {
         toJSON: {
             virtuals: true,
+            getters: true
         },
         id: false
     }
 );
+
+thoughtsSchema.virtual("reactionCount").get(function () {
+    return this.reactions.length;
+});
 
 const Thought = model("thought",thoughtsSchema);
 
