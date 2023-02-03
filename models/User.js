@@ -16,7 +16,7 @@ const userSchema = new Schema(
             unique: true,
             validate: {
                 validator: function (v) {
-                    return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/gmi.test(v);
+                    return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/gim.test(v);
                 },
                 message: props => `${props.value} is not a valid email!`
             }
@@ -27,16 +27,14 @@ const userSchema = new Schema(
             ref: 'Thought'
         },
 
-        friends: {
-            type: Schema.Types.ObjectId,
-            ref: 'User'
-        },
+        friends: [{ type: Schema.Types.ObjectId }]
     },
     {
         toJSON: {
             getters: true,
             virtuals: true
-        }
+        },
+        id: false
     }
 );
 
@@ -46,4 +44,4 @@ userSchema.virtual("friendCount").get(function () {
 
 const User = model("user",userSchema);
 
-model.exports = User;
+module.exports = User;

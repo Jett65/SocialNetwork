@@ -1,11 +1,11 @@
-const { Schema,model } = require('mongoose');
+const { Schema,model,mongoose } = require('mongoose');
 
 // Reaction subdocument
 const reactionSchema = new Schema(
     {
         reactionId: {
-            type: mongoose.Objectid,
-            default: new Objectid
+            type: mongoose.ObjectId,
+            default: () => new TYPES.ObjectId
         },
 
         reactionBody: {
@@ -21,7 +21,7 @@ const reactionSchema = new Schema(
 
         createAt: {
             type: Date,
-            default: DataTransfer.now,
+            default: Date.now,
             //TODO: use getter to format date
         }
     },
@@ -43,7 +43,7 @@ const thoughtsSchema = new Schema(
         },
 
         createdAt: {
-            type: Data,
+            type: Date,
             default: Date.now,
             //TODO: use getter to format the date
         },
@@ -53,7 +53,7 @@ const thoughtsSchema = new Schema(
             require: true
         },
 
-        reactions: [ReactionSchema]
+        reactions: [reactionSchema]
 
     },
     {
