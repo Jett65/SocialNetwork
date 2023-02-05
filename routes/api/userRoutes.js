@@ -13,11 +13,11 @@ const {
 //api/users
 router.route("/").get(getUser).post(createUser);
 
-// TODO: Make this rout work
+// FIXME
 // //api/users/:id
 router.route("/:id").get(getSingleUser).put(updateUser).delete(deleteUser);
 
-// TODO: Make that rout work
+// FIXME
 // //api/users/user-id/friends/friend-id
 router.route("/user-id/friend/friend-id").post(createNewFriend).delete(deleteFriend);
 
