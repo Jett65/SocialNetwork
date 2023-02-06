@@ -4,7 +4,7 @@ module.exports = {
 
     // get endpoints
 
-    getThought(req,res) { // FIXME
+    getThought(req,res) {
         Thought.find()
             .then((data) => res.json(data))
             .catch((err) => res.status(500).json(err));
@@ -12,7 +12,6 @@ module.exports = {
 
     getSingleThought(req,res) {
         Thought.findOne({ _id: req.params.thoughtId })
-            .select("__v")
             .then((data) =>
                 !data
                     ? res.status(404).json({ message: "No Thought Found" })
@@ -22,7 +21,7 @@ module.exports = {
 
     // post endpoints
 
-    createThought(req,res) { // FIXME 
+    createThought(req,res) {
         Thought.create(req.body)
             .then((data) =>
                 !data
@@ -32,7 +31,7 @@ module.exports = {
             .catch((err) => res.status(500).json(err));
     },
 
-    createReaction(req,res) { // FIXME
+    createReaction(req,res) {
         Thought.findOneAndUpdate(
             { _id: req.params.thoughtId },
             { $addToSet: { reactions: req.body } }
@@ -47,9 +46,9 @@ module.exports = {
 
     // put endpoints
 
-    updateThought(req,res) { // FIXME 
+    updateThought(req,res) {
         Thought.findOneAndUpdate(
-            { _id: req.params.body },
+            { _id: req.params.thoughtId },
             { $set: req.body },
             { new: true }
         )
@@ -64,22 +63,21 @@ module.exports = {
 
     // delete endpoints
 
-    deleteThought(req,res) { // FIXME 
-        Thought.findOneAndDelete({ _id: req.params.id })
+    deleteThought(req,res) {
+        Thought.findOneAndDelete({ _id: req.params.thoughtId })
 
             .then((data) =>
                 !data
                     ? res.status(404).json({ message: "No Thought Found" })
                     : res.json(data)
             )
-            .then(() => res.json({ message: "Thought deleted" }))
             .catch((err) => res.status(500).json(err));
     },
 
-    deleteReaction(req,res) { // FIXME 
+    deleteReaction(req,res) {
         Thought.findOneAndUpdate(
-            { _id: req.params.id },
-            { $pull: { friends: req.params.reactionId } }
+            { _id: req.params.thoughtId },
+            { $pull: { reactions: { _id: req.params.reactionId } } }
         )
             .then((data) =>
                 !data
