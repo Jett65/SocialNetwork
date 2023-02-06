@@ -3,13 +3,13 @@ const { User } = require("../models");
 module.exports = {
     // get endpoints
 
-    getUser(req,res) { // FIXME
+    getUser(req,res) {
         User.find()
             .then((userData) => res.json(userData))
             .catch((err) => res.status(500).json(err));
     },
 
-    getSingleUser(req,res) { // FIXME
+    getSingleUser(req,res) {
         User.findOne({ _id: req.params.userId })
             .select("-__v")
             .then((user) =>
@@ -21,7 +21,7 @@ module.exports = {
 
     // post endpoints
 
-    createUser(req,res) { // FIXME
+    createUser(req,res) {
         User.create(req.body)
             .then((userData) =>
                 !userData
@@ -31,7 +31,7 @@ module.exports = {
             .catch((err) => res.status(500).json(err));
     },
 
-    createNewFriend(req,res) { // FIXME
+    createNewFriend(req,res) {
         User.findOneAndUpdate(
             { _id: req.params.userId },
             { $push: { friends: req.params.friendId } },
@@ -48,7 +48,7 @@ module.exports = {
 
     //  put endpoints
 
-    updateUser(req,res) { // FIXME
+    updateUser(req,res) {
         User.findOneAndUpdate(
             { _id: req.params.userId },
             { $set: req.body },
@@ -64,8 +64,8 @@ module.exports = {
 
     // delete endpoints
 
-    deleteUser(req,res) { // FIXME
-        User.findOneDelete({ _id: req.params.userId })
+    deleteUser(req,res) {
+        User.findOneAndDelete({ _id: req.params.userId })
 
             .then((data) =>
                 !data
@@ -75,7 +75,7 @@ module.exports = {
             .catch((err) => res.status(500).json(err));
     },
 
-    deleteFriend(req,res) { // FIXME
+    deleteFriend(req,res) {
         User.findOneAndUpdate(
             { _id: req.params.userId },
             { $pull: { friends: req.params.friendId } }
