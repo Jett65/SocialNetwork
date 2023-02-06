@@ -10,7 +10,7 @@ module.exports = {
             .catch((err) => res.status(500).json(err));
     },
 
-    getSingleThought(req,res) { // FIXME
+    getSingleThought(req,res) {
         Thought.findOne({ _id: req.params.thoughtId })
             .then((data) =>
                 !data
